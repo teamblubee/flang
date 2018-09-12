@@ -41,9 +41,9 @@ module IEEE_ARITHMETIC
   integer, private, parameter :: round_lo = -1
   integer, private, parameter :: round_hi = 3
 
-#ifdef TARGET_LINUX_ARM
+#ifdef TARGET_LINUX_ARM || TARGET_FREEBSD_ARM
   integer, private, parameter :: FE_TONEAREST  = 0
-#ifdef TARGET_LLVM_ARM64
+#ifdef TARGET_LLVM_ARM64 || TARGET_FREEBSD_POWER
   integer, private, parameter :: FE_DOWNWARD   = X'00800000'
   integer, private, parameter :: FE_UPWARD     = X'00400000'
 #else
@@ -52,7 +52,7 @@ module IEEE_ARITHMETIC
 #endif
   integer, private, parameter :: FE_TOWARDZERO = X'00c00000'
 #else
-#ifdef TARGET_LINUX_POWER
+#ifdef TARGET_LINUX_POWER || TARGET_FREEBSD_POWER
   integer, private, parameter :: FE_TONEAREST  = 0
   integer, private, parameter :: FE_TOWARDZERO = 1
   integer, private, parameter :: FE_UPWARD     = 2
@@ -423,7 +423,7 @@ contains
 
   pure logical function ieee_support_denormalnox()
 !pgi$ defaultkind
-#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG
+#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG || TARGET_FREEBSD_ARM || TARGET_FREEBSD_POWER
     ieee_support_denormalnox = .false.
 #else
     ieee_support_denormalnox = .true.
@@ -434,7 +434,7 @@ contains
 !pgi$ defaultkind
 !dir$ ignore_tkr (kr) x
     real :: x
-#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG
+#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG || TARGET_FREEBSD_ARM || TARGET_FREEBSD_POWER
     ieee_support_denormalr = .false.
 #else
     ieee_support_denormalr = .true.
@@ -526,7 +526,7 @@ contains
 
   pure logical function ieee_support_uflowctrlnox()
 !pgi$ defaultkind
-#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG
+#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG || TARGET_FREEBSD_ARM || TARGET_FREEBSD_POWER
     ieee_support_uflowctrlnox = .false.
 #else
     ieee_support_uflowctrlnox = .true.
@@ -537,7 +537,7 @@ contains
 !pgi$ defaultkind
 !dir$ ignore_tkr (kr) x
     real :: x
-#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG
+#if defined TARGET_LINUX_ARM || defined TARGET_LINUX_POWER || defined PGFLANG || TARGET_FREEBSD_ARM || TARGET_FREEBSD_POWER
     ieee_support_uflowctrlr = .false.
 #else
     ieee_support_uflowctrlr = .true.
@@ -582,7 +582,7 @@ contains
   subroutine ieee_get_underflow_mode(uflow)
     logical*4, intent(out) :: uflow
     integer i
-#if defined TARGET_LINUX_POWER
+#if defined TARGET_LINUX_POWER || TARGET_FREEBSD_POWER
       uflow = .true.
 #else
     i = __fenv_fegetzerodenorm()
@@ -597,7 +597,7 @@ contains
   subroutine ieee_get_underflow_model8(uflow)
     logical*8, intent(out) :: uflow
     integer i
-#if defined TARGET_LINUX_POWER
+#if defined TARGET_LINUX_POWER || TARGET_FREEBSD_POWER
       uflow = .true.
 #else
     i = __fenv_fegetzerodenorm()

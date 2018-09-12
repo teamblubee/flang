@@ -15,17 +15,39 @@
 #
 
 if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES
     x86_64-Linux/ll_abi.c
   )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
+  set(ARCH_DEP_FILES
+    amd64-FreeBSD/ll_abi.c
+  )
+  endif()
+elseif( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
+  set(ARCH_DEP_FILES
+    amd64-FreeBSD/ll_abi.c
+  )
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES
       aarch64-Linux/ll_abi.c
   )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
+  set(ARCH_DEP_FILES
+    aarch-FreeBSD/ll_abi.c
+  )
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES
     ppc64le-Linux/ll_abi.c
   )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
+  set(ARCH_DEP_FILES
+    ppc64le-FreeBSD/ll_abi.c
+  )
+  endif()
 endif()
 
 

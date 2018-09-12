@@ -20,30 +20,68 @@ add_definitions(
  -DMAXCPUS=256 
  -DMAXCPUSL=8 
  -DMAXCPUSR=8 
- -DTARGET_LINUX 
  -DTARGET_LLVM 
- -DLINUX 
  -DPGF90 
  -DPGFLANG
  -DNATIVE_FPCVT
  -DPGI_LITTLE_ENDIAN
 )
-
+# MESSAGE(FATAL_ERROR "${TARGET_ARCHITECTURE} ${TARGET_OS}")
 if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
   add_definitions(
+   -DLINUX 
+   -DTARGET_LINUX 
    -DTARGET_X8664
    -DTARGET_LINUX_X8664
   )
-elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
   add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_X8664
+   -DTARGET_FREEBSD_X8664
+  )
+  endif()
+elseif( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
+  add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_X8664
+   -DTARGET_FREEBSD_X8664
+  )
+elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
+  add_definitions(
+   -DLINUX 
+   -DTARGET_LINUX 
    -DTARGET_LLVM_ARM64
    -DTARGET_LINUX_ARM
   )
-elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
   add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_LLVM_ARM64
+   -DTARGET_FREEBSD_ARM
+  )
+  endif()
+elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+  if( ${TARGET_OS} STREQUAL "Linux" )
+  add_definitions(
+    -DLINUX 
+    -DTARGET_LINUX 
     -DTARGET_LINUX_POWER
     -DLINUX_POWER
   )
+  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
+  add_definitions(
+    -DFREEBSD 
+    -DTARGET_FREEBSD 
+    -DTARGET_FREEBSD_POWER
+    -DLINUX_POWER
+  )
+  endif()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)

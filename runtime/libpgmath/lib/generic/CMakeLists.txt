@@ -27,6 +27,7 @@ else()
   get_property(DEFINITIONS GLOBAL PROPERTY "DEFINITIONS_GENERIC_L1")
 endif()
 
+MESSAGE(WARNING "GENERIC 0")
 # Generics
 set(GENERIC_SRCS
   abs.c

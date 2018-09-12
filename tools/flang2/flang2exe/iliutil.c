@@ -948,7 +948,7 @@ vect_math(MTH_FN fn, char *root, int nargs, DTYPE vdt, int vopc,
       typec = 'd';
       break;
     }
-#if defined(TARGET_LINUX_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_FREEBSD_X8664)
     if (XBIT_NEW_RELAXEDMATH) {
       switch (vopc) {
       case IL_VEXP:
@@ -12237,7 +12237,7 @@ _xpowi(int opn, int pwr, ILI_OP opc)
   return opn;
 }
 
-#if defined(TARGET_X8664) || defined(TARGET_POWER) || defined(TARGET_ARM64)
+#if defined(TARGET_X8664) || defined(TARGET_POWER) || defined(TARGET_ARM64) || defined(TARGET_FREEBSD) || defined(FREEBSD)
 static int
 _frsqrt(int x)
 {

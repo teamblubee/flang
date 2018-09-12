@@ -25,6 +25,9 @@ target_compile_definitions(ilitp
   PGF90=1
   TARGET_X86
   TARGET_X8664
+  TARGET_FREEBSD
+  TARGET_FREEBSD_X86
+  TARGET_FREEBSD_X8664
   )
 
 target_include_directories(ilitp
@@ -45,7 +48,7 @@ add_custom_command(
           ${ARCH_DEP_ILI_DIR}/ilitp.n
           ${ARCH_DEP_ILI_DIR}/ilitp_longdouble.n
   )
-
+# MESSAGE(FATAL_ERROR "${UTILS_ILI_DIR} ${ARCH_DEP_ILI_DIR}")
 add_custom_target(gen_backend_ili
   SOURCES ${UTILS_ILI_BIN_DIR}/schinfo.h ${UTILS_ILI_BIN_DIR}/ilinfodf.h ${UTILS_ILI_BIN_DIR}/iliatt.h
   )

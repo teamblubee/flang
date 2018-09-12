@@ -16,7 +16,12 @@
 
 enable_language(C ASM Fortran) # Enable assembly and Fortran
 
-SET(ASM_OPTIONS "-DLINUX_ELF")
+if( ${TARGET_OS} STREQUAL "Linux" )
+   SET(ASM_OPTIONS "-DLINUX_ELF")
+elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
+   SET(ASM_OPTIONS "-DFREEBSD_ELF")
+endif()
+
 SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
 SET(CMAKE_SHARED_LINKER_FLAGS "-no-flang-libs")
 

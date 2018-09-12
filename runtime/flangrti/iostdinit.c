@@ -160,7 +160,11 @@ __io_ferror(void *p)
 int
 __io_getfd(void *fp)
 {
+#if __FreeBSD__
+  return (((FILE *)fp)->_file);
+#else
   return (((FILE *)fp)->_fileno);
+#endif
 }
 
 /* is a tty? */
@@ -270,7 +274,7 @@ extern long *_imp___timezone_dll; /* for crtdll.dll */
 #define timezone _timezone /* cygnus, timezone is usually a function */
 #endif
 
-#elif !defined(DEC) && !defined(IBM) && !defined(ST100_V1_2) &&                !defined(OSX86) /* !defined(WINNT) */
+#elif !defined(DEC) && !defined(IBM) && !defined(ST100_V1_2) && !defined(OSX86) && !defined(__FreeBSD__) /* !defined(WINNT) */
 extern time_t timezone; /* for the rest */
 #endif
 
@@ -282,7 +286,7 @@ __io_timezone(void *tm)
 #elif defined(WINNT) || defined(WIN64) || defined(WIN32)
   return (0);
 #else
-  return -(timezone - (((struct tm *)tm)->tm_isdst ? 3600 : 0));
+  return -(size_t)(timezone - (((struct tm *)tm)->tm_isdst ? 3600 : 0));
 #endif
 }
 

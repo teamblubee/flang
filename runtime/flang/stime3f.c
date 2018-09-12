@@ -25,11 +25,17 @@
 #include "io3f.h"
 #include "ent3f.h"
 
+#elif __FreeBSD__
+#include <sys/time.h>
+
 int ENT3F(STIME, stime)(int *tp)
 {
   int i;
   time_t t = *tp;
 
+#ifdef __FreeBSD__
+  if ((i = settimeofday(&t)))
+#endif
   if ((i = stime(&t)))
     i = __io_errno();
 

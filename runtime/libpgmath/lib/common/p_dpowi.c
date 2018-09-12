@@ -31,7 +31,7 @@
  * as a temporary workaround to get higher precision multiplies.
  */
 
-#if	defined (TARGET_LINUX_GENERIC) || defined (TARGET_LINUX_POWER) || defined (LINUX8664) || defined (TARGET_X8664) || defined(TARGET_LINUX_ARM64)
+#if	defined (TARGET_LINUX_GENERIC) || defined (TARGET_LINUX_POWER) || defined (LINUX8664) || defined (TARGET_X8664) || defined(TARGET_LINUX_ARM64) || defined(FREEBSD) || defined(TARGET_FREEBSD)
 #define	__float128	long double
 #endif
 

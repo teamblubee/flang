@@ -14,8 +14,14 @@
 # limitations under the License.
 #
 
+if( ${TARGET_OS} STREQUAL "FreeBSD" )
+set(ARCH_DEP_ILI_DIR  "${UTILS_ILI_DIR}/${TARGET_ARCHITECTURE}-FreeBSD")
+set(ARCH_DEP_ILM_DIR  "${UTILS_ILM_DIR}/${TARGET_ARCHITECTURE}-FreeBSD")
+else()
 set(ARCH_DEP_ILI_DIR  ${UTILS_ILI_DIR}/${TARGET_ARCHITECTURE})
 set(ARCH_DEP_ILM_DIR  ${UTILS_ILM_DIR}/${TARGET_ARCHITECTURE})
+endif()
+# MESSAGE(FATAL_ERROR "${TARGET_OS} ${ARCH_DEP_ILI_DIR} ${ARCH_DEP_ILM_DIR}")
 
 add_subdirectory(ilitp)
 add_subdirectory(ilmtp)

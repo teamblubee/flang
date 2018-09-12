@@ -17,7 +17,15 @@
 
 #include "mthdecls.h"
 
-#if defined(WIN64)
+#if defined(__FreeBSD__)
+#include <math.h>
+double
+__fmth_i_dmod(double f, double g)
+{
+  return __builtin_fmod(f, g);
+}
+
+#elif defined(WIN64)
 double __fmth_i_dmod(double f, double g);
 #endif
 
