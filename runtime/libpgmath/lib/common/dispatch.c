@@ -346,7 +346,7 @@ static text2archtype_t text2archtype[] = {
 	{arch_armv81a,  "armv81a"},
 	{arch_armv82,    "armv82"},
 #endif
-#if defined(TARGET_LINUX_GENERIC || defined(TARGET_FREEBSD_GENERIC)
+#if defined(TARGET_LINUX_GENERIC) || defined(TARGET_FREEBSD_GENERIC)
         {arch_generic,  "generic"},
 #endif
 };

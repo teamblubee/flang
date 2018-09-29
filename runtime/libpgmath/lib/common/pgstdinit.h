@@ -104,7 +104,7 @@ typedef off64_t seekoffx_t;
 #define __io_fseekx(fp, off, wh) fseek64(fp, off, wh)
 #define __io_ftellx(fp) ftell64(fp)
 
-#if defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#elif defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
 typedef long seekoff_t;
 #define __io_fseek(fp, off, wh) fseek(fp, off, wh)
 #define __io_ftell(fp) ftell(fp)
