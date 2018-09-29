@@ -17,7 +17,7 @@
 
 #include "mth_intrinsics.h"
 
-#if defined(TARGET_LINUX_ARM64)
+#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 vrs4_t
 __gs_pow_4(vrs4_t x, vrs4_t y)
 {

@@ -17,7 +17,7 @@
 
 #include "mth_intrinsics.h"
 
-#if defined(TARGET_LINUX_ARM64)
+#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 vrd2_t
 __gd_pow_2(vrd2_t x, vrd2_t y)
 {

@@ -23,7 +23,7 @@
 void
 __flushz(void)
 {
-#ifdef TARGET_LINUX_X8664
+#if defined(TARGET_LINUX_X8664) ||  defined(TARGET_FREEBSD_X8664)
   __asm__("pushq	%rax");
   __asm__("stmxcsr	(%rsp)");
   __asm__("popq	%rax");

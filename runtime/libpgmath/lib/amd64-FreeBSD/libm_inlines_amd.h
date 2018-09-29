@@ -232,6 +232,7 @@ restorePrecision(unsigned int cwold)
 {
 #if defined(linux)
 /* There is no precision control on Hammer */
+#elif defined(__FreeBSD__)
 #elif defined(INTERIX86)
 #elif defined(TARGET_OSX_X86)
 #else
@@ -254,7 +255,7 @@ clear_fpsw_flags(int flags)
   unsigned int cw = _mm_getcsr();
   cw &= (~flags);
   _mm_setcsr(cw);
-#elif defined(linux)
+#elif defined(linux) || defined(__FreeBSD__)
   unsigned int cw;
   /* Get the current floating-point control/status word */
   asm volatile("STMXCSR %0" : "=m"(cw));
@@ -283,7 +284,7 @@ raise_fpsw_flags(int flags)
 {
 #if defined(DONOTDEFINE_WINDOWS)
   _mm_setcsr(_mm_getcsr() | flags);
-#elif defined(linux)
+#elif defined(linux) || defined(__FreeBSD__)
   unsigned int cw;
   /* Get the current floating-point control/status word */
   asm volatile("STMXCSR %0" : "=m"(cw));
@@ -308,7 +309,7 @@ get_fpsw_inline(void)
 {
 #if defined(TARGET_WIN)
   return _mm_getcsr();
-#elif defined(linux)
+#elif defined(linux) || defined(__FreeBSD__)
   unsigned int sw;
   asm volatile("STMXCSR %0" : "=m"(sw));
   return sw;
@@ -329,7 +330,7 @@ set_fpsw_inline(unsigned int sw)
 {
 #if defined(TARGET_WIN)
   _mm_setcsr(sw);
-#elif defined(linux)
+#elif defined(linux) || defined(__FreeBSD__)
   /* Set the current floating-point control/status word */
   asm volatile("LDMXCSR %0" : : "m"(sw));
 #elif defined(INTERIX86)
@@ -352,7 +353,7 @@ clear_fpsw_inline(void)
   cw &= ~(AMD_F_INEXACT | AMD_F_UNDERFLOW | AMD_F_OVERFLOW | AMD_F_DIVBYZERO |
           AMD_F_INVALID);
   _mm_setcsr(cw);
-#elif defined(linux)
+#elif defined(linux) || defined(__FreeBSD__)
   unsigned int cw;
   /* Get the current floating-point control/status word */
   asm volatile("STMXCSR %0" : "=m"(cw));

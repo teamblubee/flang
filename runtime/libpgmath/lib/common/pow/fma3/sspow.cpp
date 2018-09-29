@@ -16,9 +16,9 @@
  *
  */
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include "xmm2altivec.h"
-#elif defined(TARGET_LINUX_ARM64)
+#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 #include "arm64intrin.h"
 #else
 #include <immintrin.h>
@@ -235,7 +235,7 @@ float __fss_pow_fma3(float const a_scalar, float const b_scalar)
    __m128d b_d = _mm_cvtss_sd(b_d, b);
 
    __m128 mask = (__m128)_mm_cmplt_ps((__m128)a_compute, TWO_TO_M126_F_VEC);
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
    int moved_mask = _vec_any_nz((__m128i)mask);
 #else
    int moved_mask = _mm_movemask_ps(mask);

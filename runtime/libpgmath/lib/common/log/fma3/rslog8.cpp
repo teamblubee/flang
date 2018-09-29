@@ -16,7 +16,7 @@
  */
 
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #error "Source cannot be compiled for POWER architectures"
 #include "xmm2altivec.h"
 #else

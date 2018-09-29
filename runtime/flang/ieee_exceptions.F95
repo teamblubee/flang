@@ -39,7 +39,7 @@ module IEEE_EXCEPTIONS
   !   ieee_set_status
   !
   ! These are from fenv.h on linux64
-#ifdef TARGET_LINUX_ARM
+#if defined(TARGET_LINUX_ARM) || defined(TARGET_FREEBSD_ARM)
   integer, private, parameter :: FE_INVALID   = 1
   integer, private, parameter :: FE_DIVBYZERO = 2
   integer, private, parameter :: FE_OVERFLOW  = 4
@@ -47,7 +47,7 @@ module IEEE_EXCEPTIONS
   integer, private, parameter :: FE_INEXACT   = 16
   integer, private, parameter :: FE_DENORM    = 0
   ! FE_DENORM is not currently supported on arm 
-#elif defined(TARGET_LINUX_POWER)
+#elif defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
   ! FE_DENORM is not supported on Power
   integer, private, parameter :: FE_INVALID   = X'20000000'
   integer, private, parameter :: FE_DIVBYZERO = X'04000000'

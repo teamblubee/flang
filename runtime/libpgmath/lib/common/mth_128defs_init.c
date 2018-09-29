@@ -78,7 +78,7 @@ extern void __math_dispatch();
  *
  */
 
-#ifdef  LINUX8664
+#if defined(LINUX8664) || defined(FREEBSD8664) || defined(TARGET_FREEBSD_X8664)
 #define _ISFZEROPT0(_x) (0 == (*(int32_t *)&(_x)) << 1)
 #define _ISDZEROPT0(_x) (0 == (*(int64_t *)&(_x)) << 1)
 #else
@@ -6784,7 +6784,7 @@ MTH_DISPATCH_FUNC(__pz_sqrt_1v)(vcd1_t x)
 // EXPERIMENTAL - COMPLEX - end
 //////////
 
-#if     defined(TARGET_LINUX_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
+#if     defined(TARGET_LINUX_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT) || defined(TARGET_FREEBSD_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
 vrd1_t __gsd_atan(vrd1_t) __attribute__ ((weak, alias ("__fd_atan_1")));
 vrd2_t __gvd_atan2(vrd2_t) __attribute__ ((weak, alias ("__fd_atan_2")));
 vrd2_t __gvd_atan2_mask(vrd2_t,vid2_t) __attribute__ ((weak, alias ("__fd_atan_2m")));
@@ -6811,7 +6811,7 @@ vrs4_t __gvs_pow4(vrs4_t,vrs4_t) __attribute__ ((weak, alias ("__fs_pow_4")));
 vrs4_t __gvs_pow4_mask(vrs4_t,vrs4_t,vis4_t) __attribute__ ((weak, alias ("__fs_pow_4m")));
 #endif
 
-#if     defined(TARGET_LINUX_POWER) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
+#if     defined(TARGET_LINUX_POWER) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT) || defined(TARGET_FREEBSD_POWER) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
 vrs1_t __gss_atan(vrs1_t) __attribute__ ((weak, alias ("__fs_atan_1")));
 vrd1_t __gsd_atan(vrd1_t) __attribute__ ((weak, alias ("__fd_atan_1")));
 vrs1_t __gss_cos(vrs1_t) __attribute__ ((weak, alias ("__fs_cos_1")));
@@ -6844,7 +6844,7 @@ vrd2_t __gvd_pow2(vrd2_t,vrd2_t) __attribute__ ((weak, alias ("__fd_pow_2")));
 
 #endif
 
-#if defined(TARGET_LINUX_GENERIC) && !defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
+#if defined(TARGET_LINUX_GENERIC) && !defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT) || defined(TARGET_FREEBSD_GENERIC) && !defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
 vrs1_t __gss_atan(vrs1_t) __attribute__ ((weak, alias ("__fs_atan_1")));
 vrd1_t __gsd_atan(vrd1_t) __attribute__ ((weak, alias ("__fd_atan_1")));
 vrs1_t __gss_cos(vrs1_t) __attribute__ ((weak, alias ("__fs_cos_1")));

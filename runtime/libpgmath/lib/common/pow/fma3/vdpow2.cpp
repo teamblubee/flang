@@ -15,7 +15,7 @@
  *
  */
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include "xmm2altivec.h"
 #else
 #include <immintrin.h>
@@ -346,7 +346,7 @@ __m128d __fvd_pow_fma3(__m128d const a, __m128d const b)
      */
 
     b_is_one_mask = _mm_cmp_pd(b, ONE_F, _CMP_EQ_OQ);
-#if ! defined(TARGET_LINUX_POWER)
+#if ! defined(TARGET_LINUX_POWER) || ! defined(TARGET_FREEBSD_POWER)
     if (_mm_movemask_pd(b_is_one_mask) == 0x3) {
         return a;
     }
@@ -474,7 +474,7 @@ __m128d __fvd_pow_fma3(__m128d const a, __m128d const b)
 
     // slowpath detection for exp
     __m128d abs_bloga = (__m128d)_mm_and_si128((__m128i)bloga, HI_ABS_MASK); 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
     int exp_slowmask = _vec_any_nz((__m128i)_mm_cmp_pd(abs_bloga, UPPERBOUND_1, _CMP_GE_OS));
 #else
     int exp_slowmask = _mm_movemask_pd(_mm_cmp_pd(abs_bloga, UPPERBOUND_1, _CMP_GE_OS));
@@ -497,7 +497,7 @@ __m128d __fvd_pow_fma3(__m128d const a, __m128d const b)
     __m128i overridemask2 = _mm_cmpeq_epi64(_mm_and_si128(detect_inf_nan, ALL_ONES_EXPONENT), ALL_ONES_EXPONENT);
     overridemask = _mm_or_si128(overridemask, (__m128i)_mm_cmp_pd(a, ZERO, _CMP_LE_OQ)); // if a < 0
          
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
     int specMask = _vec_any_nz((__m128i)_mm_or_si128(overridemask, overridemask2));
 #else
     int specMask = _mm_movemask_pd((__m128d)_mm_or_si128(overridemask, overridemask2));

@@ -16,7 +16,7 @@
  *
  */
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include "xmm2altivec.h"
 #else
 #include <immintrin.h>
@@ -25,7 +25,7 @@
 
 extern "C" __m128 __fvs_pow_fma3(__m128 const, __m128 const);
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 /*
  * X86-64 implementation of __fsv_pow_fma3 uses AVX instructions to compute
  * intermediary results in double precision floating point using YMM (256-bit)
