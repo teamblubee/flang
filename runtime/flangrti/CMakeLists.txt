@@ -24,7 +24,7 @@ endif()
 
 SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
 
-if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64|amd64" )
   if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES 
     x86_64-Linux/flt_env.c
@@ -40,13 +40,6 @@ if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
     amd64-FreeBSD/dumpregs.c
   )
   endif()
-elseif( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
-  set(ARCH_DEP_FILES 
-    amd64-FreeBSD/flt_env.c
-    amd64-FreeBSD/x86_daz.c
-    amd64-FreeBSD/x86_flushz.c
-    amd64-FreeBSD/dumpregs.c
-  )
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
   if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES

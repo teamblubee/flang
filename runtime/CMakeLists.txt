@@ -27,7 +27,7 @@ add_definitions(
  -DPGI_LITTLE_ENDIAN
 )
 # MESSAGE(FATAL_ERROR "${TARGET_ARCHITECTURE} ${TARGET_OS}")
-if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64|amd64" )
   if( ${TARGET_OS} STREQUAL "Linux" )
   add_definitions(
    -DLINUX 
@@ -43,13 +43,6 @@ if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
    -DTARGET_FREEBSD_X8664
   )
   endif()
-elseif( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
-  add_definitions(
-   -DFREEBSD 
-   -DTARGET_FREEBSD 
-   -DTARGET_X8664
-   -DTARGET_FREEBSD_X8664
-  )
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
   if( ${TARGET_OS} STREQUAL "Linux" )
   add_definitions(
