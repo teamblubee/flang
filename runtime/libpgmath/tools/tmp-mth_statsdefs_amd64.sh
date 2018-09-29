@@ -29,7 +29,7 @@ awk \
 			print "DO_MTH_DISPATCH_FUNC(" f ", " s[2] \
 				", " s[3] ", ", s[4] ")"; f=""; \
 		}' \
-	"$1/mth_128defs.c" \
-	"$1/mth_256defs.c" \
-	"$1/mth_512defs.c" \
+	$1/mth_128defs.c \
+	$1/mth_256defs.c \
+	$1/mth_512defs.c \
 	> $2
