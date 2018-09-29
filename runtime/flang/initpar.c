@@ -855,7 +855,7 @@ void
 __attribute__((constructor))
 f90_compiled()
 {
-#ifndef TARGET_LINUX_ARM || TARGET_FREEBSD_ARM
+#ifndef TARGET_LINUX_ARM
   static void (*p)(void) = f90_compiled_arg;
 #endif
   if (!inited.consts) {

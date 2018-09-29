@@ -16,9 +16,9 @@
  */
 
 
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#if defined(TARGET_LINUX_POWER)
 #include "xmm2altivec.h"
-#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
+#elif defined(TARGET_LINUX_ARM64)
 #include "arm64intrin.h"
 #else
 #include <immintrin.h>
@@ -107,7 +107,7 @@ __m128 __rvs_log_fma3(__m128 a) {
     mask0 = _mm_cmp_ps(a, TWO_TO_M126, _CMP_NGE_UQ);
     mask1 = (__m128)_mm_cmpeq_epi32((__m128i)a, P_INF);
 
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#if defined(TARGET_LINUX_POWER)
     if (__builtin_expect(_vec_any_nz((__m128i)_mm_or_ps(mask0, mask1)) ,0))
 #else
     if (__builtin_expect(_mm_movemask_ps(_mm_or_ps(mask0, mask1)) ,0))

@@ -26,7 +26,7 @@ subroutine F90_matmul_real8_str1(dest,s1,s2, &
       DESC_INT  n_extnt,m_extnt,k_extnt
       DESC_INT  s1_d1_extnt,s2_d1_extnt,d_d1_extnt,d_d1_lstride
       INTEGER   bs
-#if defined(LINUX8664) || defined(FREEBSD8664)
+#if defined(LINUX8664)
       parameter (bs=128)
 #else
       parameter (bs=192)
@@ -41,7 +41,7 @@ subroutine F90_matmul_real8_str1(dest,s1,s2, &
       real *8   t20,t21,t22,t23
       real *8   t30,t31,t32,t33
       real *8 temp0, temp1, temp2, temp3
-#if defined(LINUX8664) || defined(FREEBSD8664)
+#if defined(LINUX8664)
       real *8 temp(4*bs*bs)
 #else
       real *8 temp(bs*bs)
@@ -54,7 +54,7 @@ subroutine F90_matmul_real8_str1(dest,s1,s2, &
       DESC_INT k,n,m
 
       if (d_d1_lstride .eq. 1) then
-#if defined(LINUX8664) || defined(FREEBSD8664)
+#if defined(LINUX8664)
       call _F90_matmul_real8_str1a(s1,s2,dest,                       &
 	s1_d1_extnt,s2_d1_extnt,d_d1_extnt,k_extnt,n_extnt,m_extnt,  &
 	1.0D0,0.0D0,temp, temp((bs*bs)+1),bs)

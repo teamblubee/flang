@@ -14,9 +14,9 @@
  * limitations under the License.
  *
  */
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#if defined(TARGET_LINUX_POWER)
 #include "xmm2altivec.h"
-#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
+#elif defined(TARGET_LINUX_ARM64)
 #include "arm64intrin.h"
 #else
 #include <immintrin.h>
@@ -39,7 +39,7 @@ __m128 __fvs_exp_fma3(__m128 a)
 
     __m128 abs = _mm_and_ps(a, SGN_VEC);
     __m128i sp_mask = _mm_cmpgt_epi32(_mm_castps_si128(abs), _mm_castps_si128(EXP_PDN_VEC)); // zero dla dobrych
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#if defined(TARGET_LINUX_POWER)
     int sp = _vec_any_nz(sp_mask);
 #else
     int sp = _mm_movemask_epi8(sp_mask);

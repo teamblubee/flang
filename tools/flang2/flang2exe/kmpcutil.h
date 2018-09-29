@@ -21,6 +21,7 @@
 #include "gbldefs.h"
 #include "global.h"
 #include "symtab.h"
+#include "ili.h"
 
 /** \file
  * \brief Various definitions for the kmpc runtime
@@ -29,13 +30,13 @@
 /* KMPC Task Flags
  * See KMPC's kmp.h struct kmp_tasking_flags
  */
-#define KMPC_TASK_UNTIED     0x00
-#define KMPC_TASK_TIED       0x01
-#define KMPC_TASK_FINAL      0x02
+#define KMPC_TASK_UNTIED 0x00
+#define KMPC_TASK_TIED 0x01
+#define KMPC_TASK_FINAL 0x02
 #define KMPC_TASK_MERGED_IF0 0x04
-#define KMPC_TASK_DTOR_THK   0x08
-#define KMPC_TASK_PROXY      0x10
-#define KMPC_TASK_PRIORITY   0x20
+#define KMPC_TASK_DTOR_THK 0x08
+#define KMPC_TASK_PROXY 0x10
+#define KMPC_TASK_PRIORITY 0x20
 
 /* KMPC Schedule Types
  * https://www.openmprtl.org/sites/default/files/resources/libomp_20151009_manual.pdf
@@ -43,6 +44,7 @@
  * example (KMP_SCH_DYNAMIC_CHUNKED).
  */
 typedef enum _kmpc_sched_e {
+  KMP_SCH_NONE = 0,
   KMP_SCH_LOWER = 32,
   KMP_SCH_STATIC_CHUNKED = 33,
   KMP_SCH_STATIC = 34,
@@ -72,10 +74,7 @@ typedef enum _kmpc_sched_e {
   KMP_SCH_DEFAULT = KMP_SCH_STATIC
 } kmpc_sched_e;
 
-typedef enum RegionType {
-  OPENMP,
-  OPENACC
-} RegionType;
+typedef enum RegionType { OPENMP, OPENACC } RegionType;
 
 /* Argument type used for handling for loops and scheduling.
  * All values here are sptrs.
@@ -85,17 +84,17 @@ typedef struct _loop_args_t {
   SPTR upper;
   SPTR stride;
   SPTR chunk;
-  int last;
-  int upperd;
+  SPTR last;
+  SPTR upperd;
   DTYPE dtype;        /* Lower/Upper bound data type INT,INT8,UINT, UINT8 */
   kmpc_sched_e sched; /* KMPC schedule type */
 } loop_args_t;
 
 struct kmpc_api_entry_t {
-  const char *name;     /* KMPC API function name                    */
-  const int ret_iliopc; /* KMPC API function return value ili opcode */
-  const DTYPE ret_dtype;  /* KMPC API function return value type       */
-  const int flags;      /* (Optional) See KMPC_FLAG_XXX above        */
+  const char *name;      /* KMPC API function name                    */
+  const ILI_OP ret_iliopc;  /* KMPC API function return value ili opcode */
+  const DTYPE ret_dtype; /* KMPC API function return value type       */
+  const int flags;       /* (Optional) See KMPC_FLAG_XXX above        */
 };
 
 /* Used internally for creating structs, or representing formal parameters when
@@ -203,15 +202,12 @@ int ll_make_kmpc_cancel(int argili);
  */
 int ll_make_kmpc_cancellationpoint(int argili);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_copyprivate(int array_sptr, int single_ili, int copyfunc_acon);
+/// Return a result or JSR ili to __kmpc_copyprivate()
+int ll_make_kmpc_copyprivate(SPTR array_sptr, int single_ili,
+                             int copyfunc_acon);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_critical(int sem);
+/// Return a result or JSR ili to __kmpc_critical()
+int ll_make_kmpc_critical(SPTR sem);
 
 /**
    \brief ...
@@ -223,10 +219,9 @@ int ll_make_kmpc_dispatch_fini(DTYPE dtype);
  */
 int ll_make_kmpc_dispatch_init(const loop_args_t *inargs);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_dispatch_next(int lower, int upper, int stride, int last,
+/// Return a result or JSR ili to __kmpc_dispatch_next_<size><signed|unsigned>
+/// lower, upper, stride: sptrs
+int ll_make_kmpc_dispatch_next(SPTR lower, SPTR upper, SPTR stride, SPTR last,
                                DTYPE dtype);
 
 /**
@@ -239,10 +234,8 @@ int ll_make_kmpc_dist_dispatch_init(const loop_args_t *inargs);
  */
 int ll_make_kmpc_dist_for_static_init(const loop_args_t *inargs);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_end_critical(int sem);
+/// Return a result or JSR ili to __kmpc_end_critical()
+int ll_make_kmpc_end_critical(SPTR sem);
 
 /**
    \brief ...
@@ -269,9 +262,7 @@ int ll_make_kmpc_end_single(void);
  */
 int ll_make_kmpc_end_taskgroup(void);
 
-/**
-   \brief ...
- */
+/// Return a result or JSR ili to __kmpc_flush()
 int ll_make_kmpc_flush(void);
 
 /**
@@ -352,23 +343,25 @@ int ll_make_kmpc_single(void);
 /**
    \brief ...
  */
-DTYPE ll_make_kmpc_struct_type(int count, char *name, KMPC_ST_TYPE *meminfo, ISZ_T sz);
+DTYPE ll_make_kmpc_struct_type(int count, char *name, KMPC_ST_TYPE *meminfo,
+                               ISZ_T sz);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_task_arg(SPTR base, int sptr, int scope_sptr, SPTR flags_sptr,
-                          int uplevel_ili);
+/// Return an sptr to the allocated task object:  __kmp_omp_task_alloc()
+/// \param base  sptr for storing return value from __kmpc_omp_task_alloc
+/// \param sptr  sptr representing the outlined function that is the task
+/// \param flags MP_TASK_xxx flags (see mp.h)
+/// \param scope_sptr ST_BLOCK containing the uplevel block
+/// \param uplevel_ili unused
+int ll_make_kmpc_task_arg(SPTR base, SPTR sptr, SPTR scope_sptr,
+                          SPTR flags_sptr, int uplevel_ili);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_task_begin_if0(int task_sptr);
+/// Return a JSR ili to __kmpc_omp_task_begin_if0.
+/// \param task_sptr sptr representing the allocated task
+int ll_make_kmpc_task_begin_if0(SPTR task_sptr);
 
-/**
-   \brief ...
- */
-int ll_make_kmpc_task_complete_if0(int task_sptr);
+/// Return a JSR ili to __kmpc_omp_task_complete_if0.
+/// \param task_sptr sptr representing the allocated task
+int ll_make_kmpc_task_complete_if0(SPTR task_sptr);
 
 /**
    \brief ...
@@ -403,7 +396,8 @@ int ll_make_kmpc_task_yield(void);
 /**
    \brief ...
  */
-int ll_make_kmpc_threadprivate_cached(int data_ili, int size_ili, int cache_ili);
+int ll_make_kmpc_threadprivate_cached(int data_ili, int size_ili,
+                                      int cache_ili);
 
 /**
    \brief ...
@@ -413,12 +407,15 @@ int ll_make_kmpc_threadprivate(int data_ili, int size_ili);
 /**
    \brief ...
  */
-int ll_make_kmpc_threadprivate_register(int data_ili, int ctor_ili, int cctor_ili, int dtor_ili);
+int ll_make_kmpc_threadprivate_register(int data_ili, int ctor_ili,
+                                        int cctor_ili, int dtor_ili);
 
 /**
    \brief ...
  */
-int ll_make_kmpc_threadprivate_register_vec(int data_ili, int ctor_ili, int cctor_ili, int dtor_ili, int size_ili);
+int ll_make_kmpc_threadprivate_register_vec(int data_ili, int ctor_ili,
+                                            int cctor_ili, int dtor_ili,
+                                            int size_ili);
 
 /**
    \brief ...
@@ -434,6 +431,5 @@ kmpc_sched_e mp_sched_to_kmpc_sched(int sched);
    \brief ...
  */
 void reset_kmpc_ident_dtype(void);
-
 
 #endif /* KMPC_RUNTIME_H_ */

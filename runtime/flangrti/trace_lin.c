@@ -243,5 +243,3 @@ __abort_sig_init(void)
     n++;
   }
 }
-
-

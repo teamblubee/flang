@@ -40,7 +40,7 @@
  */
 
 
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#if defined(TARGET_LINUX_POWER)
 #include <altivec.h>
 #include <assert.h>
 

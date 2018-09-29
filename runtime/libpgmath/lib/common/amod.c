@@ -17,15 +17,7 @@
 
 #include "mthdecls.h"
 
-#if defined(__FreeBSD__)
-#include <math.h>
-float 
-__fmth_i_amod(float f, float g)
-{
-        return __builtin_fmodf(f, g);
-}
-
-#elif defined(WIN64)
+#if defined(WIN64)
 float __fmth_i_amod(float f, float g);
 #endif
 

@@ -20,13 +20,10 @@ if(${LIBPGMATH_WITH_GENERIC} OR (NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|a
   set(PROCESSOR "generic")
 endif()
 
-# MESSAGE(FATAL_ERROR "${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME}")
 set_property(GLOBAL APPEND PROPERTY "TARGET_OBJECTS")
 
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
-  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-     MESSAGE(FATAL_ERROR "${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} STILL NEEDS WORK!!!")
-  elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|AMD64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
     set(DEFINITIONS_L1
       HOST_LINUX LINUX LINUX86 LINUX8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8
@@ -122,9 +119,7 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GEN
     message(FATAL "Operating System not supported.")
   endif()
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
-  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-     MESSAGE(FATAL_ERROR "${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} STILL NEEDS WORK!!!")
-  elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
   set(DEFINITIONS_L1 HOST_LINUX MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_LINUX
     TARGET_LINUX_POWER TARGET_LLVM TARGET_LLVM_LINUXPOWER TM_I8 PG_PIC)
   set(FLAGS_L1 "-m64 -O3 ")
@@ -152,11 +147,7 @@ elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
   set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_PPC64LE_L2" ${DEFINITIONS_L2})
   set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_PPC64LE_L2" ${FLAGS_L2})
   # ppc64le
-  endif()
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-     MESSAGE(FATAL_ERROR "${CMAKE_SYSTEM_PROCESSOR} ${CMAKE_SYSTEM_NAME} STILL NEEDS WORK!!!")
-  elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(DEFINITIONS_L1 HOST_LINUX MAXCPUS=8192 MAXCPUSL=128 MAXCPUSR=128
     TARGET_LINUX TARGET_LINUX_ARM TARGET_LINUX_ARM64 TARGET_LLVM
     TARGET_LLVM_LINUXAARCH64 TM_I8)
@@ -186,44 +177,7 @@ elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
   set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_ARM64_L2" ${DEFINITIONS_L2})
   set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_ARM64_L2" ${FLAGS_L2})
   # aarch64
-  endif()
 else()
-  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-
-   set(DEFINITIONS_L1 HOST_FREEBSD MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_FREEBSD
-       TARGET_FREEBSD_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_FREEBSD64
-      TARGET_X86 TARGET_X8664
-       TARGET_FREEBSD_GENERIC TARGET_64 PG_PIC)
-  set(FLAGS_L1 "-O3 -ffp-contract=fast ")
-
-  set(DEFINITIONS_L2 HOST_FREEBSD MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_FREEBSD
-      TARGET_FREEBSD_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_FREEBSD64
-      TARGET_X86 TARGET_X8664
-      TARGET_FREEBSD_GENERIC TARGET_64 PG_PIC)
-  set(FLAGS_L2 "-O3 -ffp-contract=fast ")
-
-  # common
-  # Definitions and compiler flags for level 1 directories
-  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L1" ${DEFINITIONS_L1})
-  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L1" ${FLAGS_L1})
-
-  # Definitions and compiler flags for level 2 directories
-  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L2" ${DEFINITIONS_L2})
-  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L2" ${FLAGS_L2})
-  # common
-
-  # generic
-  # Definitions and compiler flags for level 1 directories
-  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L1" ${DEFINITIONS_L1})
-  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L1" ${FLAGS_L1})
-
-  # Definitions and compiler flags for level 2 directories
-  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L2" ${DEFINITIONS_L2})
-  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L2" ${FLAGS_L2})
-  # generic
-  MESSAGE(WARNING "LEVEL 1 D1: ${DEFINITIONS_L1} F1: ${FLAGS_L1}")
-  MESSAGE(WARNING "LEVEL 2 D2: ${DEFINITIONS_L2} F2: ${FLAGS_L2}")
-  elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(DEFINITIONS_L1 HOST_LINUX MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_LINUX
     TARGET_LINUX_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_LINUX64
     TARGET_LINUX_GENERIC TARGET_64 PG_PIC)
@@ -253,48 +207,29 @@ else()
   set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L2" ${DEFINITIONS_L2})
   set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L2" ${FLAGS_L2})
   # generic
-  endif()
 endif()
 
 include_directories(common)
-if(${PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
-  if( ${TARGET_OS} STREQUAL "FreeBSD")
-    include_directories(amd64-FreeBSD)
-  else()
-    include_directories(x86_64)
-  endif()
+if(${PROCESSOR} MATCHES "x86_64|AMD64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  include_directories(x86_64)
 # elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
 #   include_directories(ppc64le)
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-  if( ${TARGET_OS} STREQUAL "FreeBSD")
-    include_directories(aarch64-FreeBSD)
-    include_directories(generic)
-  else()
-    include_directories(generic)
-    include_directories(aarch64)
-  endif()
-elseif(${PROCESSOR} MATCHES "ppc64le|generic|amd64" OR ${LIBPGMATH_WITH_GENERIC})
+  include_directories(generic)
+  include_directories(aarch64)
+elseif(${PROCESSOR} MATCHES "ppc64le|generic" OR ${LIBPGMATH_WITH_GENERIC})
   include_directories(generic)
 endif()
 
 # Add directories to build
 add_subdirectory(common)
-if(${PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
-  if( ${TARGET_OS} STREQUAL "FreeBSD")
-    add_subdirectory(amd64-FreeBSD)
-  else()
-    add_subdirectory(x86_64)
-  endif()
+if(${PROCESSOR} MATCHES "x86_64|AMD64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  add_subdirectory(x86_64)
 # elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
 #   add_subdirectory(ppc64le)
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
-  if( ${TARGET_OS} STREQUAL "FreeBSD")
-    add_subdirectory(aarch64-FreeBSD)
-    add_subdirectory(generic)
-  else()
-    add_subdirectory(generic)
-    add_subdirectory(aarch64)
-  endif()
+  add_subdirectory(generic)
+  add_subdirectory(aarch64)
 elseif(${PROCESSOR} MATCHES "ppc64le|generic" OR ${LIBPGMATH_WITH_GENERIC})
   add_subdirectory(generic)
 endif()
@@ -308,4 +243,4 @@ set_target_properties(${LIBPGMATH_LIBRARY_NAME}_static PROPERTIES OUTPUT_NAME ${
 install(TARGETS ${LIBPGMATH_LIBRARY_NAME}
   LIBRARY DESTINATION lib)
 install(TARGETS ${LIBPGMATH_LIBRARY_NAME}_static
-ARCHIVE DESTINATION lib)
+  ARCHIVE DESTINATION lib)

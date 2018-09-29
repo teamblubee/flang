@@ -16,54 +16,26 @@
 
 enable_language(C ASM) # Enable assembly
 
-if( ${TARGET_OS} STREQUAL "Linux" )
-  SET(ASM_OPTIONS "-DLINUX_ELF")
-elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
-  SET(ASM_OPTIONS "-DFREEBSD_ELF")
-endif()
-
+SET(ASM_OPTIONS "-DLINUX_ELF")
 SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
 
-if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64|amd64" )
-  if( ${TARGET_OS} STREQUAL "Linux" )
+if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
   set(ARCH_DEP_FILES 
     x86_64-Linux/flt_env.c
     x86_64-Linux/x86_daz.c
     x86_64-Linux/x86_flushz.c
     x86_64-Linux/dumpregs.c
   )
-  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
-  set(ARCH_DEP_FILES 
-    amd64-FreeBSD/flt_env.c
-    amd64-FreeBSD/x86_daz.c
-    amd64-FreeBSD/x86_flushz.c
-    amd64-FreeBSD/dumpregs.c
-  )
-  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
-  if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES
       aarch64-Linux/flt_env.c
       aarch64-Linux/dumpregs.c
   )
-  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
-   set(ARCH_DEP_FILES
-      aarch64-FreeBSD/flt_env.c
-      aarch64-FreeBSD/dumpregs.c
-  )
- endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
-  if( ${TARGET_OS} STREQUAL "Linux" )
   set(ARCH_DEP_FILES
     ppc64le-Linux/flt_env.c
     ppc64le-Linux/dumpregs.c
   )
-  elseif( ${TARGET_OS} STREQUAL "FreeBSD" )
-   set(ARCH_DEP_FILES
-    ppc64le-FreeBSD/flt_env.c
-    ppc64le-FreeBSD/dumpregs.c
-  )
- endif()
 endif()
 
 SET(PGC_SRC_FILES
@@ -93,7 +65,6 @@ SET(PGC_SRC_FILES
   memalign.c
   iostdinit.c
   tempnam.c
-  round.c
   s_erf.c
   trace_lin.c
   trace.c
@@ -138,21 +109,11 @@ find_library(
 target_link_libraries(flangrti_shared ${LIBPGMATH})
 
 if( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
-  if( ${TARGET_OS} STREQUAL "Linux")
-    target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_ARM)
-    target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_ARM)
-  elseif( ${TARGET_OS} STREQUAL "FreeBSD")
-    target_compile_definitions(flangrti_static PRIVATE TARGET_FREEBSD_ARM)
-    target_compile_definitions(flangrti_shared PRIVATE TARGET_FREEBSD_ARM)
-  endif()
+  target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_ARM)
+  target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_ARM)
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
-  if( ${TARGET_OS} STREQUAL "Linux")
-    target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_POWER)
-    target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_POWER)
-  elseif( ${TARGET_OS} STREQUAL "FreeBSD")
-    target_compile_definitions(flangrti_static PRIVATE TARGET_FREEBSD_POWER)
-    target_compile_definitions(flangrti_shared PRIVATE TARGET_FREEBSD_POWER)
-  endif()
+  target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_POWER)
+  target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_POWER)
 endif()
 
 set_property(TARGET flangrti_shared PROPERTY OUTPUT_NAME flangrti)

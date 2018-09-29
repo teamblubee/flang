@@ -26,8 +26,8 @@ else()
 endif()
 
 # Set source files, compiler flags and definitions
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64")
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|FreeBSD")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     libmath_add_object_library("${SRCS}" "${FLAGS}" "${DEFINITIONS}" "gssincos4")
     set_property(TARGET gssincos4 APPEND PROPERTY COMPILE_DEFINITIONS SINCOS=__mth_sincos PRECSIZE=4 VLEN=4)
     libmath_add_object_library("${SRCS}" "${FLAGS}" "${DEFINITIONS}" "gdsincos2")

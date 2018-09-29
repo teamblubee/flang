@@ -76,10 +76,15 @@ inline void SetILM_OPC(ILM *ilm, ILM_OP opc) {
 inline SPTR ILM_SymOPND(const ILM *ilm, int opn) {
   return static_cast<SPTR>(ILM_OPND(ilm, opn));
 }
+
+inline DTYPE ILM_DTyOPND(const ILM *ilm, int opn) {
+  return static_cast<DTYPE>(ILM_OPND(ilm, opn));
+}
 #else
 #define ILM_OPC(i) ((i)->opc)
 #define SetILM_OPC(i,j)  ((i)->opc = (j))
 #define ILM_SymOPND ILM_OPND
+#define ILM_DTyOPND ILM_OPND
 #endif
 
 /*
@@ -176,7 +181,7 @@ typedef struct {
   int curbih;  /* index of BIH of the current ILT block	 */
   int curilt;  /* index of the current (last) ILT		 */
   int saveili; /* ILI (a JMP) not yet added to the block	 */
-  int retlbl;  /* ST index to the current return label	 */
+  SPTR retlbl;  /* ST index to the current return label	 */
   int retcnt;  /* decimal number for the current rtn label */
   int swtcnt;  /* decimal number for the last switch array */
   int arglist; /* ST index of the current argument list	 */
@@ -214,10 +219,10 @@ typedef struct {
                  * implies IL_ICJMPZ (zero/non-zero test).
                  * initialized by exp_init().
                  */
-  int aret_tmp; /* temporary for the alternate return value */
+  SPTR aret_tmp; /* temporary for the alternate return value */
   int clobber_ir; /* gcc-asm clobber list (iregs) info */
   int clobber_pr; /* gcc-asm clobber list (pregs) info */
-  int mxcsr_tmp;  /* temporary for the value of the mxcsr */
+  SPTR mxcsr_tmp;  /* temporary for the value of the mxcsr */
   int implicitdataregions;
   DTYPE charlen_dtype;
 } EXP;

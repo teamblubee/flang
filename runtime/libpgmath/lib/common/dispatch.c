@@ -62,7 +62,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <inttypes.h>
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_FREEBSD_X8664)
+#ifdef TARGET_LINUX_X8664
 #include <malloc.h>
 #else
 #include <sched.h>
@@ -115,7 +115,7 @@ typedef p2f __mth_rt_vi_ptrs_t[func_size][sv_size][frp_size];
 
 static char *carch[] = {
         /* List needs to follow arch_e in tbldefs.h */
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664) || defined(TARGET_FREEBSD_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
 #define ARCH_DEFAULT arch_em64t
 #define STR_ARCH_DEFAULT "em64t(p7)"
         [arch_em64t]    = "em64t",
@@ -125,12 +125,12 @@ static char *carch[] = {
         [arch_avx2]     = "avx2",
         [arch_avx512knl]= "avx512knl",
         [arch_avx512]   = "avx512",
-#elif   defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#elif   defined(TARGET_LINUX_POWER)
 #define ARCH_DEFAULT arch_p8
 #define STR_ARCH_DEFAULT "p8"
         [arch_p8]       = "p8",
         [arch_p9]       = "p9",
-#elif   defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
+#elif   defined(TARGET_LINUX_ARM64)
 #define ARCH_DEFAULT arch_armv8
 #define STR_ARCH_DEFAULT "armv8"
 	[arch_armv8]    = "armv8",
@@ -310,7 +310,7 @@ typedef struct {
 } text2archtype_t;
 
 static text2archtype_t text2archtype[] = {
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664) || defined(TARGET_FREEBSD_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
         {arch_em64t,    "p7"},
         {arch_sse4,     "core2"},
         {arch_sse4,     "penryn"},
@@ -335,18 +335,18 @@ static text2archtype_t text2archtype[] = {
         {arch_avx512knl,"avx512knl"},
         {arch_avx512,   "avx512"},
 #endif
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#ifdef TARGET_LINUX_POWER
         {arch_p8,       "p8"},
         {arch_p8,       "pwr8"},
         {arch_p9,       "p9"},
         {arch_p9,       "pwr9"},
 #endif
-#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
+#ifdef TARGET_LINUX_ARM64
 	{arch_armv8,    "armv8"},
 	{arch_armv81a,  "armv81a"},
 	{arch_armv82,    "armv82"},
 #endif
-#if defined(TARGET_LINUX_GENERIC) || defined(TARGET_FREEBSD_GENERIC)
+#ifdef TARGET_LINUX_GENERIC
         {arch_generic,  "generic"},
 #endif
 };
@@ -1024,13 +1024,13 @@ __math_dispatch()
       }
     }
 #endif
-#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
+#ifdef TARGET_LINUX_POWER
     __math_target = ARCH_DEFAULT;
 #endif
-#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
+#ifdef TARGET_LINUX_ARM64
     __math_target = ARCH_DEFAULT;
 #endif
-#if defined(TARGET_LINUX_GENERIC) || defined(TARGET_FREEBSD_GENERIC)
+#ifdef TARGET_LINUX_GENERIC
     __math_target = ARCH_DEFAULT;
 #endif
   }
@@ -1292,7 +1292,7 @@ __math_dispatch_init()
     while (false == __math_dispatch_is_init) {
 #if     defined(TARGET_X8664)
       __asm__("pause");
-#elif   defined(TARGET_LINUX_POWER) || defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64) || defined(TARGET_FREEBSD_POWER)
+#elif   defined(TARGET_LINUX_POWER) || defined(TARGET_LINUX_ARM64)
       __asm__("yield");     // or   27,27,27
 #else
       sched_yield();

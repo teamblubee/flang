@@ -36,7 +36,7 @@ typedef unsigned long long size_t;
 #define _SIZE_T__
 #define _SIZE_T_DEFINED
 #define __SIZE_T__
-#if defined(LINUX8664) || defined(TARGET_OSX_X8664) || defined(TARGET_LLVM_64) || defined(FREEBSD8664) || defined(TARGET_FREEBSD_X86644)
+#if defined(LINUX8664) || defined(TARGET_OSX_X8664) || defined(TARGET_LLVM_64)
 typedef unsigned long size_t;
 #else
 typedef unsigned size_t;
@@ -77,7 +77,7 @@ typedef unsigned size_t;
 #endif
 #define __io_fgets(ptr, n, fp) fgets(ptr, n, fp)
 
-#if defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#if defined(LINUX) && defined(PGLF64) /* LINUX 64-bit filesystems */
 #define __io_fopen(file, typ) fopen64(file, typ)
 #else
 #define __io_fopen(file, typ) fopen(file, typ)
@@ -104,7 +104,7 @@ typedef off64_t seekoffx_t;
 #define __io_fseekx(fp, off, wh) fseek64(fp, off, wh)
 #define __io_ftellx(fp) ftell64(fp)
 
-#elif defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#elif defined(LINUX) && defined(PGLF64) /* LINUX 64-bit filesystems */
 typedef long seekoff_t;
 #define __io_fseek(fp, off, wh) fseek(fp, off, wh)
 #define __io_ftell(fp) ftell(fp)
@@ -223,7 +223,7 @@ int __io_fgetc(FILE *);
 int fgetc(FILE *);
 #endif
 char *fgets(char *, int, FILE *);
-#if defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#if defined(LINUX) && defined(PGLF64)
 FILE *fopen64(const char *, const char *);
 #endif
 FILE *fopen(const char *, const char *);
@@ -237,7 +237,7 @@ FILE *freopen(const char *, const char *, FILE *);
 int fscanf(FILE *, const char *, ...);
 int fseek(FILE *, long, int);
 long ftell(FILE *);
-#if defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#if defined(LINUX) && defined(PGLF64)
 int fseeko64(FILE *, seekoff64_t, int);
 seekoff64_t ftello64(FILE *);
 #endif
@@ -298,7 +298,7 @@ int fscanf();
 int fseek();
 int fsetpos();
 long int ftell();
-#if defined(LINUX) && defined(PGLF64) || defined(__FreeBSD__) && defined(PGLF64) /* LINUX 64-bit filesystems */
+#if defined(LINUX) && defined(PGLF64)
 int fseeko64();
 seekoff64_t ftello64();
 #endif

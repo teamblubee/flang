@@ -19,7 +19,7 @@
 
 /* For X86-64 architectures, cdexp is defined in fastmath.s */
 
-#if (! defined (TARGET_X8664) && ! defined(LINUX8664)) || (! defined (TARGET_X8664) && ! defined(FREEBSD8664))
+#if (! defined (TARGET_X8664) && ! defined(LINUX8664))
 ZMPLXFUNC_Z(__mth_i_cdexp)
 {
   ZMPLXARGS_Z;

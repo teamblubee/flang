@@ -47,9 +47,9 @@ static const vrd8_t Cdp1_8={1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}; \n\
 #endif\n\
 #if defined (TARGET_X8664) \n\
 #include \"immintrin.h\" \n\
-#elif defined (TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER) \n\
+#elif defined (TARGET_LINUX_POWER) \n\
 #include \"altivec.h\" \n\
-#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_POWER) \n\
+#elif defined(TARGET_LINUX_ARM64) \n\
 #include \"arm64intrin.h\" \n\
 #include <search.h> \n\
 #else \n\
@@ -59,7 +59,7 @@ static const vrd8_t Cdp1_8={1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}; \n\
 #include <assert.h> \n\
 #endif\n\
 \n\
-#if !defined(TARGET_X8664) && !defined(TARGET_LINUX_POWER) || !defined(TARGET_X8664) && !defined(TARGET_FREEBSD_POWER) \n\
+#if !defined(TARGET_X8664) && !defined(TARGET_LINUX_POWER)\n\
 static int u8nonzero(const void *a, const void *b) \n\
 { \n\
   assert(!a); \n\

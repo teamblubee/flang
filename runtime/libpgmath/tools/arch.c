@@ -24,6 +24,7 @@
 
 #if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
 #include "cpuid8664.h"
+#endif
 
 #ifndef	CPUIDX8664
 #define CPUIDX8664(a)  __cpuid_##a
@@ -79,5 +80,3 @@ const char *get_arch() {
 
 //   _exit(0);
 // }
-
-#endif
