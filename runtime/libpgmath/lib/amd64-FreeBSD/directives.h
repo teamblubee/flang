@@ -49,7 +49,7 @@
 #define F3 % xmm2
 #define F4 % xmm3
 
-#elif defined(LINUX_ELF) || defined(TARGET_LINUX_X86) || defined(TARGET_LINUX_X8664)
+#elif defined(LINUX_ELF) || defined(TARGET_LINUX_X86) || defined(TARGET_LINUX_X8664) || defined(FREEBSD_ELF) || defined(TARGET_FREEBSD_X86) || defined(TARGET_FREEBSD_X8664)
 #define ENT(n) n
 #define ALN_WORD .align 4
 #define ALN_FUNC .align 16
@@ -95,7 +95,7 @@
 
 #else
 #error	X8664 TARGET platform not defined.
-#error	TARGET must be one of TARGET_LINUX_X8664, TARGET_OSX_X8664, or TARGET_WIN_X8664.
+#error	TARGET must be one of TARGET_LINUX_X8664, TARGET_OSX_X8664, TARGET_FREEBSD_X86, TARGET_FREEBSD_X8664, or TARGET_WIN_X8664.
 #endif
 
 /* macros for handling pic and non-pic code */

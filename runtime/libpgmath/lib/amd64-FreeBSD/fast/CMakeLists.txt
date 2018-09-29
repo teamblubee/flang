@@ -41,6 +41,8 @@ add_custom_target(${TARGET_NAME} ALL
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   list(APPEND DEFINITIONS LINUX_ELF)
+else(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+  list(APPEND DEFINITIONS FREEBSD_ELF)
 endif()
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(SRCS
