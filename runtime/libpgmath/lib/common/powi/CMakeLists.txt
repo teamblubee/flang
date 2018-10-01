@@ -19,8 +19,8 @@ get_property(DEFINITIONS GLOBAL PROPERTY "DEFINITIONS_L1")
 get_property(FLAGS GLOBAL PROPERTY "FLAGS_L1")
 
 # Set source files, compiler flags and definitions
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64")
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|FreeBSD")
     # Set source files
     set(CORE2_SRCS fxpowi.c pxpowi.c)
     set_property(SOURCE ${CORE2_SRCS} APPEND_STRING PROPERTY COMPILE_FLAGS "-march=core2 ")

@@ -87,8 +87,8 @@ static struct sigs sigs[] = {
     {0, CODNULL, NULL} /* end of list */
 };
 
-#if __FreeBSD__
-static sigset_t *regs;
+#ifdef __FreeBSD__
+static sigset_t *regs; /* pointer to regs at signal  */
 #else
 static gregset_t *regs; /* pointer to regs at signal  */
 #endif
@@ -147,7 +147,7 @@ __abort_trace(int skip)
   char **strings;
   size_t i;
 
-#if __FreeBSD__
+#ifdef __FreeBSD__
   if (regs != (sigset_t *)0) {
 #else
   if (regs != (gregset_t *)0) {
@@ -243,3 +243,5 @@ __abort_sig_init(void)
     n++;
   }
 }
+
+

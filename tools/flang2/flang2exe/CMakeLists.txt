@@ -18,13 +18,6 @@ if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
   set(ARCH_DEP_FILES
     x86_64-Linux/ll_abi.cpp
   )
-elseif( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
-  set(ARCH_DEP_FILES
-    x86_64-FreeBSD/ll_abi.cpp
-  )
-  set(INCLUDE_DIRS
-  ${CMAKE_CURRENT_SOURCE_DIR}/x86_64-${TARGET_OS}
-  )
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
   set(ARCH_DEP_FILES
       aarch64-Linux/ll_abi.cpp
@@ -33,6 +26,9 @@ elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
   set(ARCH_DEP_FILES
     ppc64le-Linux/ll_abi.cpp
   )
+endif()
+if( ${TARGET_OS} STREQUAL "FreeBSD")
+        SET(TARGET_OS Linux)
 endif()
 
 set(SOURCES
@@ -98,22 +94,6 @@ set(COMMON_DEFS
   IN_FLANG2
   )
 
-if( ${TARGET_ARCHITECTURE} STREQUAL "amd64" )
-set(INCLUDE_DIRS
-  ${TOOLS_SHARED_DIR}
-  ${FLANG_INCLUDE_DIR}
-  ${FLANG_SOURCE_DIR}/lib/scutil
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/x86_64-${TARGET_OS}
-  ${UTILS_SYMTAB_BIN_DIR}        # Symbol table headers
-  ${UTILS_ILI_BIN_DIR}           # ILI IR headers
-  ${UTILS_ILM_BIN_DIR}           # ILM IR headers
-  ${UTILS_MACHAR_BIN_DIR}        # ILM IR headers
-  ${UTILS_UPPER_BIN_DIR}         # `Upper' headers
-  ${UTILS_SHARED_DIR}
-  )
-else()
 set(INCLUDE_DIRS
   ${TOOLS_SHARED_DIR}
   ${FLANG_INCLUDE_DIR}
@@ -128,7 +108,6 @@ set(INCLUDE_DIRS
   ${UTILS_UPPER_BIN_DIR}         # `Upper' headers
   ${UTILS_SHARED_DIR}
   )
-endif()
 
 set(SHARED_SOURCES
   ${SHARED_SOURCES}

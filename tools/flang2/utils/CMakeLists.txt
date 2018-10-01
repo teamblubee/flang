@@ -14,13 +14,8 @@
 # limitations under the License.
 #
 
-if(${TARGET_ARCHITECTURE} MATCHES "amd64")
-   set(ARCH_DEP_ILI_DIR  ${UTILS_ILI_DIR}/x86_64)
-   set(ARCH_DEP_ILM_DIR  ${UTILS_ILM_DIR}/x86_64)
-elseif(${TARGET_ARCHITECTURE} MATCHES "Linux")
-   set(ARCH_DEP_ILI_DIR  ${UTILS_ILI_DIR}/${TARGET_ARCHITECTURE})
-   set(ARCH_DEP_ILM_DIR  ${UTILS_ILM_DIR}/${TARGET_ARCHITECTURE})
-endif()
+set(ARCH_DEP_ILI_DIR  ${UTILS_ILI_DIR}/${TARGET_ARCHITECTURE})
+set(ARCH_DEP_ILM_DIR  ${UTILS_ILM_DIR}/${TARGET_ARCHITECTURE})
 
 add_subdirectory(ilitp)
 add_subdirectory(ilmtp)

@@ -21,7 +21,11 @@
  *  Declare routines that access the machine registers
  */
 
-#if __FreeBSD__
+#ifdef __FreeBSD__
+#include <sys/ucontext.h>
+
+void dumpregs(sigset_t *regs);
+sigset_t *getRegs(ucontext_t *u);
 #else
 void dumpregs(gregset_t *regs);
 gregset_t *getRegs(ucontext_t *u);

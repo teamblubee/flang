@@ -63,7 +63,10 @@
 #include <unistd.h>
 #include <inttypes.h>
 #ifdef TARGET_LINUX_X8664
+#ifdef __FreeBSD__
+#else
 #include <malloc.h>
+#endif
 #else
 #include <sched.h>
 #endif

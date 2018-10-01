@@ -28,7 +28,10 @@
 #include "ili.h"
 #include "expand.h"
 #include "regutil.h"
+#ifdef __FreeBSD__
+#else
 #include "machreg.h"
+#endif
 
 extern int getcon();
 extern int mkfunc();
@@ -404,12 +407,15 @@ merge_blks(int b1, int b2)
 void
 merge_rgset(int tobih, int frombih, bool reuse_to)
 {
+#ifdef __FreeBSD__
+#else
   if (BIH_RGSET(tobih) != BIH_RGSET(frombih)) {
     if (!BIH_RGSET(tobih))
       BIH_RGSET(tobih) = mr_get_rgset();
     if (BIH_RGSET(frombih))
       RGSET_XR(BIH_RGSET(tobih)) |= RGSET_XR(BIH_RGSET(frombih));
   }
+#endif
 }
 
 #if DEBUG

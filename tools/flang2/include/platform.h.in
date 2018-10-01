@@ -25,17 +25,10 @@
  *  - true for all arch/arch
  */
 #define BIGOBJ 1
-#if defined(__FreeBSD) || defined(__amd64) || defined(__amd64__)
-#cmakedefine FREEBSD86 1
-#cmakedefine __amd64__ 1
-#cmakedefine __amd64 1
-#cmakedefine amd64 1
-#else
 #cmakedefine LINUX86 1
-#cmakedefine X86_64 1
-#endif
 #define LONG_IS_64 1
 #define NOLZ 1
+#cmakedefine X86_64 1
 
 #define HOST_@ARCH@ 1
 #define HOST_@ARCH@@WRDSZ@ 1
