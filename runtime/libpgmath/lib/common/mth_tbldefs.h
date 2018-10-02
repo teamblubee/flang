@@ -27,7 +27,7 @@ typedef enum {
 	 * platforms.
 	 */
 	arch_any=0,
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664) || defined(TARGET_FREEBSD_X8664)
 	arch_em64t,	// em64t/opteron
 	arch_sse4,	// SSE4A/SSE4.1
 			// greyhound, barcelona, core2,

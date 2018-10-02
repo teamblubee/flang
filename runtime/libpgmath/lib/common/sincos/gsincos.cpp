@@ -21,7 +21,7 @@
 #include <altivec.h>
 #elif defined(TARGET_LINUX_ARM64)
 #include "arm64intrin.h"
-#elif   defined(LINUX8664) || defined(TARGET_OSX_X8664)
+#elif   defined(LINUX8664) || defined(TARGET_OSX_X8664) || defined(FREEBSD8664)
 #include <immintrin.h>
 #else
 #error Unknown architecture
@@ -56,7 +56,7 @@
 #define GENERICNAME     CONCAT4(__g,PREC,_sincos_,VLEN)
 #define GENERICNAMEMASK CONCAT5(__g,PREC,_sincos_,VLEN,m)
 
-#if     defined(LINUX8664) || defined(TARGET_OSX_X8664)
+#if     defined(LINUX8664) || defined(TARGET_OSX_X8664) || defined(FREEBSD8664)
   #define _s_VL_4
   #define _d_VL_2
   #define _s_VL_8 256

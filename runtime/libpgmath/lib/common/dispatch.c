@@ -118,7 +118,7 @@ typedef p2f __mth_rt_vi_ptrs_t[func_size][sv_size][frp_size];
 
 static char *carch[] = {
         /* List needs to follow arch_e in tbldefs.h */
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664) || defined(TARGET_FREEBSD_X8664)
 #define ARCH_DEFAULT arch_em64t
 #define STR_ARCH_DEFAULT "em64t(p7)"
         [arch_em64t]    = "em64t",
@@ -313,7 +313,7 @@ typedef struct {
 } text2archtype_t;
 
 static text2archtype_t text2archtype[] = {
-#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_OSX_X8664) || defined(TARGET_FREEBSD_X8664)
         {arch_em64t,    "p7"},
         {arch_sse4,     "core2"},
         {arch_sse4,     "penryn"},
@@ -349,7 +349,7 @@ static text2archtype_t text2archtype[] = {
 	{arch_armv81a,  "armv81a"},
 	{arch_armv82,    "armv82"},
 #endif
-#ifdef TARGET_LINUX_GENERIC
+#if defined(TARGET_LINUX_GENERIC) || defined(TARGET_FREEBSD_GENERIC)
         {arch_generic,  "generic"},
 #endif
 };
@@ -1033,7 +1033,7 @@ __math_dispatch()
 #ifdef TARGET_LINUX_ARM64
     __math_target = ARCH_DEFAULT;
 #endif
-#ifdef TARGET_LINUX_GENERIC
+#if defined(TARGET_LINUX_GENERIC) || defined(TARGET_FREEBSD_GENERIC)
     __math_target = ARCH_DEFAULT;
 #endif
   }

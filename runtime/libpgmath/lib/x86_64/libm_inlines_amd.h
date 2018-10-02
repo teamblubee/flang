@@ -283,7 +283,7 @@ raise_fpsw_flags(int flags)
 {
 #if defined(DONOTDEFINE_WINDOWS)
   _mm_setcsr(_mm_getcsr() | flags);
-#elif defined(linux) || defined(__FreeBSD__)
+#elif defined(linux)
   unsigned int cw;
   /* Get the current floating-point control/status word */
   asm volatile("STMXCSR %0" : "=m"(cw));
