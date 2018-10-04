@@ -85,11 +85,7 @@ set(SRCS
   tan.c
   tanh.c)
 list(APPEND DEFINITIONS _GNU_SOURCE _ISOC99_SOURCE)
-<<<<<<< HEAD
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|FreeBSD")
-=======
-if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
->>>>>>> 5e15ecefa94bf5a3bb20e2bb87c5461c195efb9d
   list(APPEND DEFINITIONS _GNU_SOURCE)
 endif()
 set(FLAGS "${FLAGS}-Wall -W -Wstrict-prototypes -Wwrite-strings -Werror ")
