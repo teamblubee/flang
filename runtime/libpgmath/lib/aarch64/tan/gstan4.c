@@ -15,7 +15,7 @@
  *
  */
 
-#if defined(TARGET_LINUX_ARM64)
+#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 
 #include "mth_intrinsics.h"
 

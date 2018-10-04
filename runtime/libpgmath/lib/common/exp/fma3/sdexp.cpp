@@ -16,10 +16,10 @@
  *
  */
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include "xmm2altivec.h"
 #include <math.h>
-#elif defined(TARGET_LINUX_ARM64)
+#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 #include "arm64intrin.h"
 #include <math.h>
 #else
@@ -129,7 +129,7 @@ double __fsd_exp_fma3(double const a_in)
 
     __m128d abs_a = (__m128d)_mm_and_si128((__m128i)a, HI_ABS_MASK);
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
     int exp_slowmask = _vec_any_nz((__m128i)_mm_cmpgt_epi64((__m128i)abs_a, (__m128i)UPPERBOUND_1));
 #else
     int exp_slowmask = _mm_movemask_epi8(_mm_cmpgt_epi64((__m128i)abs_a, (__m128i)UPPERBOUND_1));

@@ -16,9 +16,9 @@
  *
  */
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include "xmm2altivec.h"
-#elif defined(TARGET_LINUX_ARM64)
+#elif defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 #include "arm64intrin.h"
 #elif defined(TARGET_X8664)
 #include <immintrin.h>
@@ -232,7 +232,7 @@ double __fsd_log_fma3(double const a_in)
     __m128i detect_non_positive = (__m128i)_mm_cmp_sd(a, ZERO, _CMP_LE_OQ);
     __m128i overridemask = _mm_cmpeq_epi64(_mm_and_si128(detect_inf_nan, ALL_ONES_EXPONENT), ALL_ONES_EXPONENT);
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
     int specMask = _vec_any_nz((__m128i)_mm_or_si128(detect_non_positive, overridemask));
 #else
     int specMask = _mm_movemask_pd((__m128d)_mm_or_si128(detect_non_positive, overridemask));

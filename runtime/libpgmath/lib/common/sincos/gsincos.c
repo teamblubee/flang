@@ -15,13 +15,13 @@
  *
  */
 
-#if defined(TARGET_LINUX_ARM64)
+#if defined(TARGET_LINUX_ARM64) || defined(TARGET_FREEBSD_ARM64)
 #error "gsincos.c is not used on AArch64."
 #endif
 
 #include "mth_intrinsics.h"
 
-#if defined(TARGET_LINUX_POWER)
+#if defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
 #include <altivec.h>
 #elif   defined(LINUX8664) || defined(TARGET_OSX_X8664) || defined(FREEBSD8664)
 #include <immintrin.h>
@@ -66,7 +66,7 @@
   #define __VLSIZE(_prec,_vlen) _##_prec##_VL_##_vlen
   #define _VLSIZE(_prec,_vlen) __VLSIZE(_prec,_vlen)
   #define VEC_LOAD(_a)  (VFLOAT)CONCAT4(_mm,_VLSIZE(PREC,VLEN),_load_p,PREC)((FLOAT *)_a)
-#elif   defined(TARGET_LINUX_POWER)
+#elif   defined(TARGET_LINUX_POWER) || defined(TARGET_FREEBSD_POWER)
   /*
    * POWER intrinsic does note seems to accept (double *) as an address in vec_ld().
    * Thus make the argument always look like a (float *).
