@@ -30,7 +30,11 @@ int ENT3F(STIME, stime)(int *tp)
   int i;
   time_t t = *tp;
 
+#ifdef __FreeBSD__
+  if ((i = gettimeofday(&t)))
+#else
   if ((i = stime(&t)))
+#endif
     i = __io_errno();
 
   return i;

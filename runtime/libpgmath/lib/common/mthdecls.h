@@ -586,7 +586,7 @@ double __mth_i_dbessel_y1(double arg);
 double __mth_i_dbessel_yn(int n, double arg);
 double __f90_dbessel_yn(int n1, int n, double d);
 
-#if	! defined (TARGET_X8664) && ! defined(LINUX8664)
+#if	! defined (TARGET_X8664) && ! defined(LINUX8664) && !defined(FREEBSD8664)
 /*
  * See explanation below for rationale behind the two flavors of __mth_sincos.
  */

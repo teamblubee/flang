@@ -19,14 +19,11 @@ set(PROCESSOR ${CMAKE_SYSTEM_PROCESSOR})
 if(${LIBPGMATH_WITH_GENERIC} OR (NOT ${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|aarch64|amd64"))
   set(PROCESSOR "generic")
 endif()
-if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND ${PROCESSOR} MATCHES "amd64")
-  set(PROCESSOR "x86_64")
-endif()
 
 set_property(GLOBAL APPEND PROPERTY "TARGET_OBJECTS")
 
 if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|FreeBSD")
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
     set(DEFINITIONS_L1
       HOST_LINUX LINUX LINUX86 LINUX8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8
@@ -38,6 +35,47 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GEN
       LINUX LINUX86 LINUX8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 __gnu_linux__
       TARGET_LINUX TARGET_LINUX_X86 TARGET_LINUX_X8664 TARGET_X86 TARGET_X8664
       PG_PIC)
+    set(FLAGS_L2 "-m64 -O3 -mtune=core-avx2 -march=core-avx2 ")
+
+    # common
+    # Definitions and compiler flags for level 1 directories
+    set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L1" ${DEFINITIONS_L1})
+    set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L1" ${FLAGS_L1})
+
+    # Definitions and compiler flags for level 2 directories
+    set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L2" ${DEFINITIONS_L2})
+    set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L2" ${FLAGS_L2})
+    # common
+
+    # x86_64
+    # Definitions and compiler flags for level 1 directories
+    set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_X8664_L1" ${DEFINITIONS_L1})
+    set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_X8664_L1" ${FLAGS_L1})
+
+    # Definitions and compiler flags for level 2 directories
+    set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_X8664_L2" ${DEFINITIONS_L2})
+    set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_X8664_L2" ${FLAGS_L2})
+    # x86_64
+  elseif(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+
+    set(DEFINITIONS_L1
+            HOST_FREEBSD FREEBSD FREEBSD86 FREEBSD8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8
+            TARGET_FREEBSD TARGET_FREEBSD_X86 TARGET_FREEBSD_X8664 TARGET_X86 TARGET_X8664
+            FreeBSD__ PG_PIC)
+
+            # HOST_LINUX LINUX LINUX86 LINUX8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8
+            # TARGET_LINUX TARGET_LINUX_X86 TARGET_LINUX_X8664 TARGET_X86 TARGET_X8664
+            # __gnu_linux__ PG_PIC)
+    set(FLAGS_L1 "-m64 -O3 ")
+
+    set(DEFINITIONS_L2
+            FREEBSD FREEBSD86 FREEBSD8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 __gnu_linux__
+            TARGET_FREEBSD TARGET_FREEBSD_X86 TARGET_FREEBSD_X8664 TARGET_X86 TARGET_X8664
+            PG_PIC)
+
+            # LINUX LINUX86 LINUX8664 MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 __gnu_linux__
+            # TARGET_LINUX TARGET_LINUX_X86 TARGET_LINUX_X8664 TARGET_X86 TARGET_X8664
+            # PG_PIC)
     set(FLAGS_L2 "-m64 -O3 -mtune=core-avx2 -march=core-avx2 ")
 
     # common
@@ -181,6 +219,39 @@ elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
   set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_ARM64_L2" ${FLAGS_L2})
   # aarch64
 else()
+  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+  set(DEFINITIONS_L1 
+          HOST_FREEBSD MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_FREEBSD
+          TARGET_FREEBSD_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_FREEBSD64
+          TARGET_FREEBSD_GENERIC TARGET_64 PG_PIC)
+  set(FLAGS_L1 "-O3 -ffp-contract=fast ")
+
+  set(DEFINITIONS_L2 
+          HOST_FREEBSD MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_FREEBSD
+          TARGET_FREEBSD_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_FREEBSD64
+          TARGET_FREEBSD_GENERIC TARGET_64 PG_PIC)
+  set(FLAGS_L2 "-O3 -ffp-contract=fast ")
+
+  # common
+  # Definitions and compiler flags for level 1 directories
+  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L1" ${DEFINITIONS_L1})
+  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L1" ${FLAGS_L1})
+
+  # Definitions and compiler flags for level 2 directories
+  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_L2" ${DEFINITIONS_L2})
+  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_L2" ${FLAGS_L2})
+  # common
+
+  # generic
+  # Definitions and compiler flags for level 1 directories
+  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L1" ${DEFINITIONS_L1})
+  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L1" ${FLAGS_L1})
+
+  # Definitions and compiler flags for level 2 directories
+  set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L2" ${DEFINITIONS_L2})
+  set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L2" ${FLAGS_L2})
+  # generic
+  else()
   set(DEFINITIONS_L1 HOST_LINUX MAXCPUS=256 MAXCPUSL=8 MAXCPUSR=8 TARGET_LINUX
     TARGET_LINUX_64 TARGET_LLVM TARGET_LLVM_64 TARGET_LLVM_LINUX64
     TARGET_LINUX_GENERIC TARGET_64 PG_PIC)
@@ -210,11 +281,17 @@ else()
   set_property(GLOBAL APPEND PROPERTY "DEFINITIONS_GENERIC_L2" ${DEFINITIONS_L2})
   set_property(GLOBAL APPEND_STRING PROPERTY "FLAGS_GENERIC_L2" ${FLAGS_L2})
   # generic
+
+endif()
 endif()
 
 include_directories(common)
 if(${PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+  include_directories(amd64)
+  else()
   include_directories(x86_64)
+  endif()
 # elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
 #   include_directories(ppc64le)
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
@@ -227,7 +304,11 @@ endif()
 # Add directories to build
 add_subdirectory(common)
 if(${PROCESSOR} MATCHES "x86_64|amd64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+  add_subdirectory(amd64)
+  else()
   add_subdirectory(x86_64)
+  endif()
 # elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "ppc64le")
 #   add_subdirectory(ppc64le)
 elseif(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")

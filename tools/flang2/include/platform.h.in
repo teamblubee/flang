@@ -25,7 +25,11 @@
  *  - true for all arch/arch
  */
 #define BIGOBJ 1
+#ifdef __FreeBSD__
+#cmakedefine FREEBSD86 1
+#else
 #cmakedefine LINUX86 1
+#endif
 #define LONG_IS_64 1
 #define NOLZ 1
 #cmakedefine X86_64 1

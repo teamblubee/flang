@@ -33,10 +33,13 @@ set(FLANG2_INCLUDE_DIR    ${CMAKE_CURRENT_BINARY_DIR}/include)
 
 include_directories(${FLANG2_INCLUDE_DIR})
 
-if( ${TARGET_OS} STREQUAL "Linux|FreeBSD" )
-  if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64|amd64" )
+if( ${TARGET_ARCHITECTURE} MATCHES "x86_64|amd64" )
+  if( ${TARGET_OS} STREQUAL "FreeBSD" )
+    set(FREEBSD86 ON)
     set(X86_64 ON)
+    else()
     set(LINUX86 ON)
+    set(X86_64 ON)
   endif()
 endif()
 

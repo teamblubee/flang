@@ -17,11 +17,8 @@
 
 /* mp-safe wrappers for malloc, etc. */
 
-#ifdef TARGET_LINUX
-#ifdef __FreeBSD__
-#else
+#if defined (TARGET_LINUX) || !defined(TARGET_FREEBSD)
 #include <features.h>
-#endif
 #endif
 
 #include <stdlib.h>

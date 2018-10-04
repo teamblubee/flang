@@ -16,26 +16,53 @@
 
 enable_language(C ASM) # Enable assembly
 
+if(${TARGET_OS} STREQUAL "FreeBSD")
+SET(ASM_OPTIONS "-DFREEBSD_ELF")
+else()
 SET(ASM_OPTIONS "-DLINUX_ELF")
+endif()
 SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
 
-if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+if( ${TARGET_ARCHITECTURE} MATCHES "x86_64|amd64" )
+  if(${TARGET_OS} STREQUAL "FreeBSD")
+    set(ARCH_DEP_FILES 
+     amd64-FreeBSD/flt_env.c
+     amd64-FreeBSD/x86_daz.c
+     amd64-FreeBSD/x86_flushz.c
+     amd64-FreeBSD/dumpregs.c
+    )
+else()
   set(ARCH_DEP_FILES 
     x86_64-Linux/flt_env.c
     x86_64-Linux/x86_daz.c
     x86_64-Linux/x86_flushz.c
     x86_64-Linux/dumpregs.c
   )
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+if(${TARGET_OS} STREQUAL "FreeBSD")
+  set(ARCH_DEP_FILES
+     aarch64-FreeBSD/flt_env.c
+     aarch64-FreeBSD/dumpregs.c
+  )
+else()
   set(ARCH_DEP_FILES
       aarch64-Linux/flt_env.c
       aarch64-Linux/dumpregs.c
   )
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+if(${TARGET_OS} STREQUAL "FreeBSD")
+  set(ARCH_DEP_FILES
+    ppc64le-FreeBSD/flt_env.c
+    ppc64le-FreeBSD/dumpregs.c
+  )
+else()
   set(ARCH_DEP_FILES
     ppc64le-Linux/flt_env.c
     ppc64le-Linux/dumpregs.c
   )
+  endif()
 endif()
 
 SET(PGC_SRC_FILES
@@ -109,11 +136,21 @@ find_library(
 target_link_libraries(flangrti_shared ${LIBPGMATH})
 
 if( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+  if(${TARGET_OS} STREQUAL "FreeBSD")
+  target_compile_definitions(flangrti_static PRIVATE TARGET_FREEBSD_ARM)
+  target_compile_definitions(flangrti_shared PRIVATE TARGET_FREEBSD_ARM)
+  else()
   target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_ARM)
   target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_ARM)
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+  if(${TARGET_OS} STREQUAL "FreeBSD")
+ target_compile_definitions(flangrti_static PRIVATE TARGET_FREEBSD_POWER)
+ target_compile_definitions(flangrti_shared PRIVATE TARGET_FREEBSD_POWER)
+  else()
   target_compile_definitions(flangrti_static PRIVATE TARGET_LINUX_POWER)
   target_compile_definitions(flangrti_shared PRIVATE TARGET_LINUX_POWER)
+  endif()
 endif()
 
 set_property(TARGET flangrti_shared PROPERTY OUTPUT_NAME flangrti)

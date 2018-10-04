@@ -384,7 +384,7 @@ Ftn_str_free(char **first)
 
 #define __HAVE_LONGLONG_T
 
-#if defined(LINUX8664) || defined(OSX8664)
+#if defined(LINUX8664) || defined(OSX8664) || defined(FREEBSD8664)
 typedef long _LONGLONG_T;
 typedef unsigned long _ULONGLONG_T;
 #else

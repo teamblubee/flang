@@ -17,7 +17,7 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|ppc64le|aarch64" AND NOT ${LIBPGMATH_WITH_GENERIC})
+  if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64|ppc64le|aarch64" AND NOT ${LIBPGMATH_WITH_GENERIC})
     add_subdirectory("acos")
     add_subdirectory("asin")
     add_subdirectory("exp")

@@ -4343,7 +4343,7 @@ MTH_DISPATCH_FUNC(__pz_sqrt_2m)(vcd2_t x, vid2_t m)
 //// EXPERIMENTAL - COMPLEX - end
 ////////////
 
-#if     defined(TARGET_LINUX_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
+#if     defined(TARGET_LINUX_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT) || defined(TARGET_FREEBSD_X8664) && ! defined(MTH_I_INTRIN_STATS) && ! defined(MTH_I_INTRIN_INIT)
 vrd4_t __gvd_atan4(vrd4_t) __attribute__ ((weak, alias ("__fd_atan_4")));
 vrd4_t __gvd_atan4_mask(vrd4_t,vid4_t) __attribute__ ((weak, alias ("__fd_atan_4m")));
 vrs8_t __gvs_atan8(vrs8_t) __attribute__ ((weak, alias ("__fs_atan_8")));

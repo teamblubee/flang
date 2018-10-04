@@ -20,9 +20,7 @@ add_definitions(
  -DMAXCPUS=256 
  -DMAXCPUSL=8 
  -DMAXCPUSR=8 
- -DTARGET_LINUX 
  -DTARGET_LLVM 
- -DLINUX 
  -DPGF90 
  -DPGFLANG
  -DNATIVE_FPCVT
@@ -30,21 +28,54 @@ add_definitions(
  -DINLINE_MEMOPS
 )
 
-if( ${TARGET_ARCHITECTURE} STREQUAL "x86_64" )
+if( ${TARGET_ARCHITECTURE} MATCHES "x86_64|amd64" )
+if(${TARGET_OS} STREQUAL "FreeBSD")
   add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_X8664
+   -DTARGET_FREEBSD_X8664
+  )
+  else()
+  add_definitions(
+   -DLINUX 
+   -DTARGET_LINUX 
    -DTARGET_X8664
    -DTARGET_LINUX_X8664
   )
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "aarch64" )
+if(${TARGET_OS} STREQUAL "FreeBSD")
   add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_LLVM_ARM64
+   -DTARGET_FREEBSD_ARM
+  )
+  else()
+  add_definitions(
+   -DLINUX 
+   -DTARGET_LINUX 
    -DTARGET_LLVM_ARM64
    -DTARGET_LINUX_ARM
   )
+  endif()
 elseif( ${TARGET_ARCHITECTURE} STREQUAL "ppc64le" )
+if(${TARGET_OS} STREQUAL "FreeBSD")
   add_definitions(
+   -DFREEBSD 
+   -DTARGET_FREEBSD 
+   -DTARGET_FREEBSD_POWER
+   -DFREEBSD_POWER
+  )
+  else()
+  add_definitions(
+    -DLINUX 
+    -DTARGET_LINUX 
     -DTARGET_LINUX_POWER
     -DLINUX_POWER
   )
+  endif()
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)

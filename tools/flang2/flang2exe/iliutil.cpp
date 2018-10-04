@@ -978,7 +978,7 @@ vect_math(MTH_FN fn, char *root, int nargs, DTYPE vdt, int vopc, int vdt1,
       typec = 'd';
       break;
     }
-#if defined(TARGET_LINUX_X8664)
+#if defined(TARGET_LINUX_X8664) || defined(TARGET_FREEBSD_X8664)
     if (XBIT_NEW_RELAXEDMATH) {
       switch (vopc) {
       case IL_VEXP:

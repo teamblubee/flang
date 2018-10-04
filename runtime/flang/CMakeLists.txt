@@ -16,7 +16,11 @@
 
 enable_language(C ASM Fortran) # Enable assembly and Fortran
 
+if(${TARGET_OS} STREQUAL "FreeBSD")
+SET(ASM_OPTIONS "-DFREEBSD_ELF")
+else()
 SET(ASM_OPTIONS "-DLINUX_ELF")
+endif()
 SET(CMAKE_ASM_FLAGS "${CFLAGS} ${ASM_OPTIONS}" )
 SET(CMAKE_SHARED_LINKER_FLAGS "-no-flang-libs")
 
@@ -419,7 +423,7 @@ set(I8_FILES_DIR I8_sources)
 # Fortran files with macros as module names need to be preprocessed. 
 add_custom_command(
   OUTPUT "${I8_FILES_DIR}/ieee_arithmetic.F95"
-  COMMAND "${CMAKE_C_COMPILER}" -E 
+  COMMAND "${CMAKE_C_COMPILER}" -E
   "${CMAKE_CURRENT_SOURCE_DIR}/ieee_arithmetic.F95" -DDESC_I8 
   > "${I8_FILES_DIR}/ieee_arithmetic.F95"
   COMMENT "Preprocessing ieee_arithmetic.F95"
@@ -428,7 +432,7 @@ add_custom_command(
 
 add_custom_command(
   OUTPUT "${I8_FILES_DIR}/ieee_exceptions.F95"
-  COMMAND "${CMAKE_C_COMPILER}" -E 
+  COMMAND "${CMAKE_C_COMPILER}" -E
   "${CMAKE_CURRENT_SOURCE_DIR}/ieee_exceptions.F95" -DDESC_I8 
   > "${I8_FILES_DIR}/ieee_exceptions.F95"
   COMMENT "Preprocessing ieee_exceptions.F95"
