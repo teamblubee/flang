@@ -18,7 +18,11 @@
 # called from the directories that contains the source files
 # Second arg is the name of the output file created
 
+<<<<<<< HEAD
 awk \
+=======
+gawk \
+>>>>>>> 5e15ecefa94bf5a3bb20e2bb87c5461c195efb9d
 		'/^MTH_DISPATCH_FUNC/ { \
 			f = $1; \
 			sub("^MTH_DISPATCH_FUNC\\(", "", f); \

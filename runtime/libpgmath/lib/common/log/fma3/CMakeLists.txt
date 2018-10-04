@@ -21,8 +21,8 @@ get_property(FLAGS GLOBAL PROPERTY "FLAGS_L2")
 set(SRCS)
 
 # Set source files, compiler flags and definitions
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64|amd64")
-  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|Darwin|FreeBSD")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64")
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|Darwin")
     set(SRCS
       fdlog1.cpp
       fdlog2.cpp

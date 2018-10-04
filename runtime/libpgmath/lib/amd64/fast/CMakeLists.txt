@@ -39,9 +39,13 @@ add_custom_command(OUTPUT tmp.${TARGET_NAME}.h PRE_BUILD
 add_custom_target(${TARGET_NAME} ALL
   DEPENDS tmp.${TARGET_NAME}.h)
 
+<<<<<<< HEAD
 if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   list(APPEND DEFINITIONS FREEBSD_ELF)
   else()
+=======
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux|FreeBSD")
+>>>>>>> 5e15ecefa94bf5a3bb20e2bb87c5461c195efb9d
   list(APPEND DEFINITIONS LINUX_ELF)
 endif()
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
